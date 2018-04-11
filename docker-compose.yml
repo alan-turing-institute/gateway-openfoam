@@ -1,5 +1,12 @@
 version: '3'
 services:
+  test:
+    container_name: backend-test
+    build: .
+    command: pytest tests
+    depends_on:
+    - simulator
+    - job-manager
   job-manager:  # http network hostname
     container_name: job-manager-openfoam  # ssh hostname
     build:
@@ -36,5 +43,3 @@ services:
 networks:
   db_nw:
     driver: bridge
-volumes:
-  database:
