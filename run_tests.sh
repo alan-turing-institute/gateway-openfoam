@@ -7,7 +7,7 @@ NC='\033[0m'
 # kill and remove any running containers
 cleanup () {
   docker-compose -p gateway-test kill
-  docker-compose -p gateway-test rm -f 
+  docker-compose -p gateway-test rm -f
 }
 # catch unexpected failures, do cleanup and output an error message
 trap 'cleanup ; printf "${RED}Tests Failed For Unexpected Reasons${NC}\n"'\
