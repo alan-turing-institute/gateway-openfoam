@@ -1,6 +1,7 @@
 version: '3'
 services:
-  job-manager:
+  job-manager:  # http network hostname
+    container_name: job-manager-openfoam  # ssh hostname
     build:
       context: gateway-job-manager-openfoam
       dockerfile: Dockerfile
@@ -16,13 +17,14 @@ services:
     networks:
     - db_nw
   simulator:
+    container_name: simulator-openfoam
     build:
       context: gateway-simulator-openfoam
       dockerfile: Dockerfile
 
     # here we use the keys from the job-manager
     env_file:
-     - gateway-job-manager-openfoam/keys/simulator.env
+     - ./gateway-job-manager-openfoam/keys/simulator.env
 
     ports:
     - "10022:22"
@@ -36,4 +38,3 @@ networks:
     driver: bridge
 volumes:
   database:
-
