@@ -3,10 +3,13 @@ services:
   test:
     container_name: backend-test
     build: .
-    command: pytest tests
+#    command: tail -F README.md
+    command: pytest -s tests    
     depends_on:
     - simulator
     - job-manager
+    networks:
+    - db_nw
   job-manager:  # http network hostname
     container_name: job-manager-openfoam  # ssh hostname
     build:
