@@ -16,5 +16,5 @@ def test_job_status():
     time.sleep(5)
     r = requests.get(JOB_MANAGER_URL+"/job/1/status")
     print(r.content)
-
+    assert(r.status_code == 200)
 

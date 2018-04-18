@@ -4,11 +4,16 @@ Test the simulator connection.
 
 import time
 import os
-
 import sys
+import unittest.mock as mock
+
 sys.path[0:0] = ["gateway-job-manager-openfoam"]
 import config
 from connection import simulator
+from preprocessor import file_putter
+
+RESOURCE_DIR = os.path.join("tests","resources")
+
 
 class DummyConfig(object):
     """
@@ -32,17 +37,51 @@ class DummyConfig(object):
         else:
             return None
 
-        
-def test_simulator_connection():
+
+def mock_get_simulator_connection():
     """
-    use the credentials in gateway-job-manager/config.py to ssh to simulator
-    test that we can get the simulator to echo 'hello'
+    get the simulator connection, without needing a running app.
     """
     dev_config = config.DevelopmentConfig()
     dummy_config = DummyConfig(dev_config)
     credentials = simulator.SSH_Credentials(dummy_config)
     connect = simulator.SimulatorConnection(credentials)
+    return connect
+    
+def test_exec_command():
+    """
+    use the credentials in gateway-job-manager/config.py to ssh to simulator
+    test that we can get the simulator to echo 'hello'
+    """
+    connect = mock_get_simulator_connection()
     out, err, exit_code = connect._run_remote_command('echo hello')
     print(out, err, exit_code)
     assert(out.strip() == "hello")
 
+
+@mock.patch('preprocessor.file_putter.get_simulator_connection',
+            side_effect=mock_get_simulator_connection)
+def test_script_transfer(mock_get_simulator_connection):
+    """
+    copy a directory full of scripts, with some directory structure, and
+    check that they are there.
+    """
+    # get our own ssh connection so we can clear dirctory before starting,
+    # and later check the results of the copy
+    connect = mock_get_simulator_connection()
+    # source and dest dirs
+    dambreak_dir = os.path.join(RESOURCE_DIR, "damBreak")
+    destination_dir = os.path.join("/tmp","damBreak")
+    # remove the destination_dir if it already exists
+    out, err, exit_code = connect._run_remote_command('rm -fr '+destination_dir)
+    assert(exit_code == 0)
+    # now call the actual function
+    file_putter.copy_scripts_to_backend(dambreak_dir,destination_dir)
+    
+    # verify that we did copy something
+    out, err, exit_code = connect._run_remote_command('ls '+destination_dir)
+    assert("0" in out)
+    assert("Allclean" in out)
+    subdir = os.path.join(destination_dir,"0")
+    out, err, exit_code = connect._run_remote_command('ls '+subdir)
+    assert("alpha.water" in out)
