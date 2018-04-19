@@ -55,7 +55,6 @@ def test_exec_command():
     """
     connect = mock_get_simulator_connection()
     out, err, exit_code = connect._run_remote_command('echo hello')
-    print(out, err, exit_code)
     assert(out.strip() == "hello")
 
 
@@ -71,13 +70,11 @@ def test_script_transfer(mock_get_simulator_connection):
     connect = mock_get_simulator_connection()
     # source and dest dirs
     dambreak_dir = os.path.join(RESOURCE_DIR, "damBreak")
-    destination_dir = os.path.join("/tmp","damBreak")
-    # remove the destination_dir if it already exists
-    out, err, exit_code = connect._run_remote_command('rm -fr '+destination_dir)
-    assert(exit_code == 0)
+    destination_dir = os.path.join("/tmp","54321","damBreak")
+
     # now call the actual function
-    file_putter.copy_scripts_to_backend(dambreak_dir,destination_dir)
-    
+    copied_ok = file_putter.copy_scripts_to_backend(dambreak_dir, destination_dir)
+    assert(copied_ok)
     # verify that we did copy something
     out, err, exit_code = connect._run_remote_command('ls '+destination_dir)
     assert("0" in out)
