@@ -70,6 +70,7 @@ def test_script_transfer(mock_get_simulator_connection):
     connect = mock_get_simulator_connection()
     # source and dest dirs
     dambreak_dir = os.path.join(RESOURCE_DIR, "damBreak")
+    # here '54321' plays the role of a job_id
     destination_dir = os.path.join("/tmp","54321","damBreak")
 
     # now call the actual function

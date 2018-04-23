@@ -15,7 +15,7 @@ matrix:
 before_install:
  - git submodule init
  - git submodule update
- - rm gateway-job-manager-openfoam/config.py
+ - rm -f gateway-job-manager-openfoam/config.py
  - sed "s/os.environ\[\'azure_account_name\'\]/\'$azure_account_name\'/g" gateway-job-manager-openfoam/config.py.example > tmp.config
  - export key_sanitized=`echo $azure_account_key | tr '/' '|'`
  - sed "s/os.environ\[\'azure_account_key\'\]/\'$key_sanitized\'/g" tmp.config > tmp2.config
