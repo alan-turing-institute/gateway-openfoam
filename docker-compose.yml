@@ -10,6 +10,9 @@ services:
     - job-manager
     networks:
     - db_nw
+    environment:
+    - azure_account_name
+    - azure_account_key
   job-manager:  # http network hostname
     container_name: job-manager-openfoam  # ssh hostname
     build:
@@ -22,6 +25,8 @@ services:
     - ./gateway-job-manager-openfoam:/app
     environment:
     - FLASK_CONFIGURATION=default
+    - azure_account_name
+    - azure_account_key
     depends_on:
     - simulator
     networks:

@@ -8,7 +8,7 @@ import sys
 import unittest.mock as mock
 
 sys.path[0:0] = ["gateway-job-manager-openfoam"]
-import config2
+import config
 from connection import simulator
 from preprocessor import file_putter
 
@@ -42,7 +42,7 @@ def mock_get_simulator_connection():
     """
     get the simulator connection, without needing a running app.
     """
-    dev_config = config2.DevelopmentConfig()
+    dev_config = config.DevelopmentConfig()
     dummy_config = DummyConfig(dev_config)
     credentials = simulator.SSH_Credentials(dummy_config)
     connect = simulator.SimulatorConnection(credentials)
