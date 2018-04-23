@@ -16,7 +16,7 @@ before_install:
  - git submodule init
  - git submodule update
  - cp gateway-job-manager-openfoam/config.py.example gateway-job-manager-openfoam/config.py
-
+ - (cd gateway-job-manager-openfoam/keys && ./create_keys.sh)
 install:
  - docker-compose build
 
