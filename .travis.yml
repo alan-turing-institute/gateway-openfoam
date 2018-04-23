@@ -16,6 +16,7 @@ before_install:
  - git submodule init
  - git submodule update
  - sed "s/os.environ\[\'azure_account_name\'\]/\'$azure_account_name\'/g" gateway-job-manager-openfoam/config.py.example > tmp.config
+ - sed "s/os.environ\[\'azure_account_key\'\]/\'$azure_account_key\'/g" tmp.config > gateway-job-manager-openfoam/config.py 
  - (cd gateway-job-manager-openfoam/keys && ./create_keys.sh)
  
 install:
