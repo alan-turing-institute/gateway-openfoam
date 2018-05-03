@@ -54,7 +54,7 @@ def test_exec_command():
     test that we can get the simulator to echo 'hello'
     """
     connect = mock_get_simulator_connection()
-    out, err, exit_code = connect._run_remote_command('echo hello')
+    out, err, exit_code = connect.run_remote_command('echo hello')
     assert(out.strip() == "hello")
 
 
@@ -74,12 +74,16 @@ def test_script_transfer(mock_get_simulator_connection):
     destination_dir = os.path.join("/tmp","54321","damBreak")
 
     # now call the actual function
-    copied_ok = file_putter.copy_scripts_to_backend(dambreak_dir, destination_dir)
+    job_id = '1'
+    copied_ok, message = file_putter.copy_scripts_to_backend(dambreak_dir,
+                                                             destination_dir,
+                                                             1)
     assert(copied_ok)
     # verify that we did copy something
-    out, err, exit_code = connect._run_remote_command('ls '+destination_dir)
+    destination_dir = os.path.join(destination_dir, job_id)
+    out, err, exit_code = connect.run_remote_command('ls '+destination_dir)
     assert("0" in out)
     assert("Allclean" in out)
     subdir = os.path.join(destination_dir,"0")
-    out, err, exit_code = connect._run_remote_command('ls '+subdir)
+    out, err, exit_code = connect.run_remote_command('ls '+subdir)
     assert("alpha.water" in out)

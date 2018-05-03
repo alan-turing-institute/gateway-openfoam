@@ -63,5 +63,5 @@ def test_run_cmd():
     r = requests.post(JOB_MANAGER_URL+"/job/98765/start",json=job_data_with_run)
     print(r.content)
     rjson = json.loads(r.content.decode("utf-8"))
-    print(rjson["stdout"])
+    print(rjson["data"])
     assert(rjson["status"] == 0)
