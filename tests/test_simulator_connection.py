@@ -77,7 +77,7 @@ def test_script_transfer(mock_get_simulator_connection):
     job_id = '1'
     copied_ok, message = file_putter.copy_scripts_to_backend(dambreak_dir,
                                                              destination_dir,
-                                                             1)
+                                                             job_id)
     assert(copied_ok)
     # verify that we did copy something
     destination_dir = os.path.join(destination_dir, job_id)
