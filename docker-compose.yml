@@ -1,10 +1,10 @@
 version: '3'
 services:
   test:
-    container_name: backend-test
+    container_name: test
     build: .
 #    command: tail -F README.md
-    command: pytest -s tests    
+    command: pytest -s tests
     depends_on:
     - simulator
     - job-manager
