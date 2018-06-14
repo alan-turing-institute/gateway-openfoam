@@ -84,6 +84,10 @@ def test_script_transfer(mock_get_simulator_connection):
 
     # assert(copied_ok)
 
+    print('ls {}'.format(dambreak_dir))
+    print(os.listdir(dambreak_dir))
+
+
     # verify that we did copy something
     destination_dir = os.path.join(simulation_root, job_id)
     out, err, exit_code = connect.run_remote_command('ls ' + destination_dir)
