@@ -13,7 +13,7 @@ from routes import setup_routes
 @fixture(scope="module")
 def demo_app():
     """
-    Setup the flask app context I hope
+    Setup the flask app context
     """
     app = Flask(__name__)
 
