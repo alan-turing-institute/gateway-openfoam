@@ -1,5 +1,5 @@
 """
-Test the job start endpoint. 
+Test the job start endpoint.
 """
 
 import requests
@@ -13,15 +13,15 @@ JOB_MANAGER_URL = 'http://job-manager-openfoam:5001'
 job_data = {
     "scripts" : [
       {
-          "source" : "https://sgmiddleware.blob.core.windows.net/testopenfoamapi/damBreak/0/alpha.water" ,
+          "source" : "https://sgmiddleware.blob.core.windows.net/openfoam-test-cases/damBreak/0/alpha.water.orig" ,
           "action" : "null",
-          "destination" : "damBreak/0/alpha.water",
+          "destination" : "0/alpha.water.orig",
           "patch" : False
       },
       {
-          "source" : "https://sgmiddleware.blob.core.windows.net/testopenfoamapi/damBreak/Allrun",
+          "source" : "https://sgmiddleware.blob.core.windows.net/openfoam-test-cases/damBreak/Allrun",
           "action" : "null",
-          "destination" : "damBreak/Allrun",
+          "destination" : "Allrun",
           "patch" : False
       }
     ],
@@ -35,7 +35,12 @@ def test_copy_scripts():
     """
     # wait a bit for the service to come up
     time.sleep(5)
-    r = requests.post(JOB_MANAGER_URL+"/job/125/start",json=job_data)
+
+    # none of the scripts have a "RUN" action, therefore the following
+    # request to /start won't actually trigger a run
+    r = requests.post(
+        JOB_MANAGER_URL+'/job/7d839169-9588-4a8d-8416-5dc32cde113e/start',
+        json=job_data)
     print(r.content)
     rjson = json.loads(r.content.decode("utf-8"))
     assert(rjson["status"] == 0)
@@ -44,7 +49,7 @@ def test_copy_scripts():
 job_data_with_run = {
     "scripts" : [
       {
-          "source" : "https://sgmiddleware.blob.core.windows.net/testopenfoamapi/test_cmd.sh" ,
+          "source" : "https://sgmiddleware.blob.core.windows.net/openfoam-test-cases/minimal/test_cmd.sh",
           "action" : "RUN",
           "destination" : "test_cmd.sh",
           "patch" : False
@@ -60,7 +65,9 @@ def test_run_cmd():
     """
     # wait a bit for the service to come up
     time.sleep(5)
-    r = requests.post(JOB_MANAGER_URL+"/job/98765/start",json=job_data_with_run)
+    r = requests.post(
+        JOB_MANAGER_URL+"/job/7d839169-9588-4a8d-8416-5dc32cde113e/start",
+        json=job_data_with_run)
     print(r.content)
     rjson = json.loads(r.content.decode("utf-8"))
     print(rjson["data"])
