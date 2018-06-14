@@ -1,5 +1,5 @@
 """
-Test the job start endpoint. 
+Test the job start endpoint.
 """
 
 import requests
@@ -38,7 +38,7 @@ def test_copy_scripts():
     r = requests.post(JOB_MANAGER_URL+"/job/125/start",json=job_data)
     print(r.content)
     rjson = json.loads(r.content.decode("utf-8"))
-    assert(rjson["status"] == 0)
+    assert(rjson["status"] == 200)
 
 
 job_data_with_run = {
@@ -64,4 +64,4 @@ def test_run_cmd():
     print(r.content)
     rjson = json.loads(r.content.decode("utf-8"))
     print(rjson["data"])
-    assert(rjson["status"] == 0)
+    assert(rjson["status"] == 200)
