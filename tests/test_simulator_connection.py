@@ -73,7 +73,7 @@ def test_script_transfer(mock_get_simulator_connection):
     simulation_root = '/tmp'
 
     # now call the actual function
-    job_id = '7d839169-9588-4a8d-8416-5dc32cde113e'
+    job_id = '66e0de89-925b-4f00-abf8-a400ea644ce4'
     copied_ok, message = file_putter.copy_scripts_to_backend(dambreak_dir,
                                                              simulation_root,
                                                              job_id)
