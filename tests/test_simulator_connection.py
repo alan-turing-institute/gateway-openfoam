@@ -70,7 +70,6 @@ def test_script_transfer(mock_get_simulator_connection):
     connect = mock_get_simulator_connection()
     # source and dest dirs
     dambreak_dir = os.path.join(RESOURCE_DIR, "damBreak")
-    # here '54321' plays the role of a job_id
     simulation_root = '/tmp'
 
     # now call the actual function
@@ -78,6 +77,11 @@ def test_script_transfer(mock_get_simulator_connection):
     copied_ok, message = file_putter.copy_scripts_to_backend(dambreak_dir,
                                                              simulation_root,
                                                              job_id)
+
+    print('DEBUG')
+    print(copied_ok)
+    print(message)
+
     assert(copied_ok)
 
     # verify that we did copy something
