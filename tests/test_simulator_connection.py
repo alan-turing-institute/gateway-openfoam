@@ -78,29 +78,15 @@ def test_script_transfer(mock_get_simulator_connection):
                                                              simulation_root,
                                                              job_id)
 
-    print('DEBUG')
-    print(copied_ok)
-    print(message)
-
-    # assert(copied_ok)
-
-    print('ls {}'.format(dambreak_dir))
-    print(os.listdir(dambreak_dir))
-
+    assert(copied_ok)
 
     # verify that we did copy something
     destination_dir = os.path.join(simulation_root, job_id)
     out, err, exit_code = connect.run_remote_command('ls ' + destination_dir)
 
-    print('ls {}'.format(destination_dir))
-    print(out)
-
-    # assert("0" in out)
-    # assert("Allclean" in out)
+    assert("0" in out)
+    assert("Allclean" in out)
 
     subdir = os.path.join(destination_dir, "0")
     out, err, exit_code = connect.run_remote_command('ls ' + subdir)
-    # assert("alpha.water.orig" in out)
-
-    print('ls {}'.format(subdir))
-    print(out)
+    assert("alpha.water.orig" in out)
