@@ -3,7 +3,7 @@ services:
   test:
     container_name: test
     build: .
-#    command: tail -F README.md
+    # command: tail -F /dev/null
     command: pytest -s tests
     depends_on:
     - simulator
@@ -11,8 +11,8 @@ services:
     networks:
     - db_nw
     environment:
-    - azure_account_name
-    - azure_account_key
+    - AZURE_ACCOUNT_NAME
+    - AZURE_ACCOUNT_KEY
   job-manager:  # http network hostname
     container_name: job-manager-openfoam  # ssh hostname
     build:
@@ -24,9 +24,9 @@ services:
     volumes:
     - ./gateway-job-manager-openfoam:/app
     environment:
-    - FLASK_CONFIGURATION=default
-    - azure_account_name
-    - azure_account_key
+    - FLASK_CONFIGURATION=development
+    - AZURE_ACCOUNT_NAME
+    - AZURE_ACCOUNT_KEY
     depends_on:
     - simulator
     networks:

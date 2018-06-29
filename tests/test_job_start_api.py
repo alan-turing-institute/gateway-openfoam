@@ -13,13 +13,13 @@ JOB_MANAGER_URL = 'http://job-manager-openfoam:5001'
 job_data = {
     "scripts" : [
       {
-          "source" : "https://sgmiddleware.blob.core.windows.net/openfoam-test-cases/damBreak/0/alpha.water.orig" ,
+          "source" : "https://simulate.blob.core.windows.net/openfoam-test-cases/damBreak/0/alpha.water.orig" ,
           "action" : "null",
           "destination" : "0/alpha.water.orig",
           "patch" : False
       },
       {
-          "source" : "https://sgmiddleware.blob.core.windows.net/openfoam-test-cases/damBreak/Allrun",
+          "source" : "https://simulate.blob.core.windows.net/openfoam-test-cases/damBreak/Allrun",
           "action" : "null",
           "destination" : "Allrun",
           "patch" : False
@@ -49,7 +49,7 @@ def test_copy_scripts():
 job_data_with_run = {
     "scripts" : [
       {
-          "source" : "https://sgmiddleware.blob.core.windows.net/openfoam-test-cases/minimal/test_cmd.sh",
+          "source" : "https://simulate.blob.core.windows.net/openfoam-test-cases/minimal/test_cmd.sh",
           "action" : "RUN",
           "destination" : "test_cmd.sh",
           "patch" : False

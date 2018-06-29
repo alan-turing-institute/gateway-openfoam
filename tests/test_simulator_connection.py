@@ -5,52 +5,34 @@ Test the simulator connection.
 import time
 import os
 import sys
+import json
 import unittest.mock as mock
 
-sys.path[0:0] = ["gateway-job-manager-openfoam"]
-import config
+# add manager to import search path
+sys.path[0:0] = ['gateway-job-manager-openfoam']
+
 from connection import simulator
 from preprocessor import file_putter
 
 RESOURCE_DIR = os.path.join("tests","resources")
 
-
-class DummyConfig(object):
-    """
-    mimic a flask app's config object - allow
-    attributes to be retrieved via get()
-    """
-    def __init__(self,config):
-        """
-        constructor takes an instance of one of the classes in config.py
-        just need to modify where the simulator_key is found
-        """
-        self.config = config
-        self.config.SSH_PRIVATE_KEY_PATH = 'gateway-job-manager-openfoam/keys/simulator_key'
-
-    def get(self, attribute):
-        """
-        return an attribute if it is in the config dictionary, otherwise None.
-        """
-        if attribute in self.config.__dir__():
-            return self.config.__getattribute__(attribute)
-        else:
-            return None
-
-
 def mock_get_simulator_connection():
     """
     get the simulator connection, without needing a running app.
     """
-    dev_config = config.DevelopmentConfig()
-    dummy_config = DummyConfig(dev_config)
-    credentials = simulator.SSH_Credentials(dummy_config)
+
+    modified_config = json.load(open('gateway-job-manager-openfoam/config.testing.json'))
+    # overwrite path to SSH key
+    modified_config['SSH_PRIVATE_KEY_PATH'] = \
+        'gateway-job-manager-openfoam/keys/simulator_key'
+
+    credentials = simulator.SSH_Credentials(modified_config)
     connect = simulator.SimulatorConnection(credentials)
     return connect
 
 def test_exec_command():
     """
-    use the credentials in gateway-job-manager/config.py to ssh to simulator
+    use the credentials in gateway-job-manager to ssh to simulator
     test that we can get the simulator to echo 'hello'
     """
     connect = mock_get_simulator_connection()
