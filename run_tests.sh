@@ -16,7 +16,7 @@ cleanup () {
 trap 'cleanup ; printf "${RED}Tests Failed For Unexpected Reasons${NC}\n"'\
   HUP INT QUIT PIPE TERM
 # build and run the composed services
-docker-compose -p gateway-test build && \
+# docker-compose -p gateway-test build && \
 docker-compose -p gateway-test up -d
 
 if [ $? -ne 0 ] ; then

@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   test:
     container_name: test
     build: .
@@ -11,26 +12,29 @@ services:
     networks:
     - db_nw
     environment:
-    - AZURE_ACCOUNT_NAME
-    - AZURE_ACCOUNT_KEY
+    - STORAGE_ACCOUNT_NAME
+    - STORAGE_ACCOUNT_KEY
+    volumes:
+      - .:/app
+
   job-manager:  # http network hostname
-    container_name: job-manager-openfoam  # ssh hostname
     build:
       context: gateway-job-manager-openfoam
       dockerfile: Dockerfile
     ports:
-    - "5001:5001"
-    - "10023:22"
+      - "5001:5001"
+      - "10023:22"
     volumes:
-    - ./gateway-job-manager-openfoam:/app
+      - ./gateway-job-manager-openfoam:/app
     environment:
-    - FLASK_CONFIGURATION=development
-    - AZURE_ACCOUNT_NAME
-    - AZURE_ACCOUNT_KEY
+      - FLASK_CONFIGURATION=testing
+      - STORAGE_ACCOUNT_NAME
+      - STORAGE_ACCOUNT_KEY
     depends_on:
-    - simulator
+      - simulator
     networks:
-    - db_nw
+      - db_nw
+
   simulator:
     container_name: simulator-openfoam
     build:
@@ -39,15 +43,16 @@ services:
 
     # here we use the keys from the job-manager
     env_file:
-    - ./gateway-job-manager-openfoam/keys/simulator.env
+      - ./gateway-job-manager-openfoam/keys/simulator.env
 
     ports:
-    - "10022:22"
+      - "10022:22"
     privileged: true
     volumes:
-    - ./gateway-simulator-openfoam:/app
+      - ./gateway-simulator-openfoam:/app
     networks:
-    - db_nw
+      - db_nw
+
 networks:
   db_nw:
     driver: bridge
