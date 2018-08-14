@@ -1,6 +1,6 @@
-[submodule "gateway-simulator-openfoam"]
-	path = gateway-simulator-openfoam
+[submodule "simulator"]
+	path = simulator
 	url = https://github.com/alan-turing-institute/gateway-simulator-openfoam.git
-[submodule "gateway-job-manager-openfoam"]
-	path = gateway-job-manager-openfoam
+[submodule "manger"]
+	path = manager
 	url = https://github.com/alan-turing-institute/gateway-job-manager-openfoam

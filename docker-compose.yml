@@ -8,7 +8,7 @@ services:
     command: pytest -s tests
     depends_on:
     - simulator
-    - job-manager
+    - manager
     networks:
     - db_nw
     environment:
@@ -17,15 +17,15 @@ services:
     volumes:
       - .:/app
 
-  job-manager:  # http network hostname
+  manager:  # http network hostname
     build:
-      context: gateway-job-manager-openfoam
+      context: manager
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
       - "10023:22"
     volumes:
-      - ./gateway-job-manager-openfoam:/app
+      - ./manager:/app
     environment:
       - FLASK_CONFIGURATION=testing
       - STORAGE_ACCOUNT_NAME
@@ -36,20 +36,20 @@ services:
       - db_nw
 
   simulator:
-    container_name: simulator-openfoam
+    container_name: simulator
     build:
-      context: gateway-simulator-openfoam
+      context: simulator
       dockerfile: Dockerfile
 
-    # here we use the keys from the job-manager
+    # here we use the keys from the manager
     env_file:
-      - ./gateway-job-manager-openfoam/keys/simulator.env
+      - ./manager/keys/simulator.env
 
     ports:
       - "10022:22"
     privileged: true
     volumes:
-      - ./gateway-simulator-openfoam:/app
+      - ./simulator:/app
     networks:
       - db_nw
 

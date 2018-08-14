@@ -1,4 +1,4 @@
-# gateway-openfoam
+# Simulate-openfoam
 
 
 
@@ -13,6 +13,6 @@ The script will run all required docker containers (job manager, simulator) and 
 To shortcut the build process (i.e. useful when running many tests during development), use
 
 ```
-docker-compose -p gateway-test run test
+docker-compose -p simulate-test run test
 ```
 

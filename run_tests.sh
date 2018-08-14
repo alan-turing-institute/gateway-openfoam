@@ -9,15 +9,15 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 # kill and remove any running containers
 cleanup () {
-  docker-compose -p gateway-test kill
-  docker-compose -p gateway-test rm -f
+  docker-compose -p simulate-test kill
+  docker-compose -p simulate-test rm -f
 }
 # catch unexpected failures, do cleanup and output an error message
 trap 'cleanup ; printf "${RED}Tests Failed For Unexpected Reasons${NC}\n"'\
   HUP INT QUIT PIPE TERM
 # build and run the composed services
-# docker-compose -p gateway-test build && \
-docker-compose -p gateway-test up -d
+# docker-compose -p simulate-test build && \
+docker-compose -p simulate-test up -d
 
 if [ $? -ne 0 ] ; then
   printf "${RED}Docker Compose Failed${NC}\n"

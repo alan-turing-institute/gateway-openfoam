@@ -9,7 +9,7 @@ import json
 import unittest.mock as mock
 
 # add manager to import search path
-sys.path[0:0] = ['gateway-job-manager-openfoam']
+sys.path[0:0] = ['manager']
 
 from connection import simulator
 from preprocessor import file_putter
@@ -21,10 +21,10 @@ def mock_get_simulator_connection():
     get the simulator connection, without needing a running app.
     """
 
-    modified_config = json.load(open('gateway-job-manager-openfoam/config.testing.json'))
+    modified_config = json.load(open('manager/config.testing.json'))
     # overwrite path to SSH key
     modified_config['SSH_PRIVATE_KEY_PATH'] = \
-        'gateway-job-manager-openfoam/keys/simulator_key'
+        'manager/keys/simulator_key'
 
     credentials = simulator.SSH_Credentials(modified_config)
     connect = simulator.SimulatorConnection(credentials)
@@ -32,7 +32,7 @@ def mock_get_simulator_connection():
 
 def test_exec_command():
     """
-    use the credentials in gateway-job-manager to ssh to simulator
+    use the credentials in manager to ssh to simulator
     test that we can get the simulator to echo 'hello'
     """
     connect = mock_get_simulator_connection()
