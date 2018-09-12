@@ -10,7 +10,7 @@ services:
     - simulator
     - manager
     networks:
-    - db_nw
+    - share
     environment:
     - STORAGE_ACCOUNT_NAME
     - STORAGE_ACCOUNT_KEY
@@ -22,7 +22,7 @@ services:
       context: manager
       dockerfile: Dockerfile
     ports:
-      - "5001:5001"
+      - "5010:5010"
       - "10023:22"
     volumes:
       - ./manager:/app
@@ -33,7 +33,7 @@ services:
     depends_on:
       - simulator
     networks:
-      - db_nw
+      - share
 
   simulator:
     container_name: simulator
@@ -44,15 +44,14 @@ services:
     # here we use the keys from the manager
     env_file:
       - ./manager/keys/simulator.env
-
     ports:
       - "10022:22"
     privileged: true
     volumes:
       - ./simulator:/app
     networks:
-      - db_nw
+      - share
 
 networks:
-  db_nw:
+  share:
     driver: bridge

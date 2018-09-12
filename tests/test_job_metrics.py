@@ -10,8 +10,8 @@ import json
 from posixpath import join as urljoin
 
 
-JOB_MANAGER_URL = "http://manager:5001"
-# JOB_MANAGER_URL = "http://localhost:5001"
+JOB_MANAGER_URL = "http://manager:5010"
+# JOB_MANAGER_URL = "http://localhost:5010"
 
 scripts = [
     {
