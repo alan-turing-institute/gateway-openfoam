@@ -28,7 +28,8 @@ fi
 TEST_EXIT_CODE=$(docker wait test)
 
 # output the logs for the test (for clarity)
-docker logs test
+docker-compose -p simulate-test logs test
+
 # inspect the output of the test and display respective message
 if [ -z ${TEST_EXIT_CODE+x} ] || [ "$TEST_EXIT_CODE" -ne 0 ] ; then
   printf "${RED}Tests Failed${NC} - Exit Code: $TEST_EXIT_CODE\n"

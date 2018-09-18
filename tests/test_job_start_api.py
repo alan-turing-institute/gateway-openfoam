@@ -45,9 +45,8 @@ def test_copy_scripts():
         urljoin(JOB_MANAGER_URL, "job/f6fdc57b-43c6-41f6-8a4b-1b5bb74d85ad/start"),
         json=job_data,
     )
-    print(r.content)
-    rjson = json.loads(r.content.decode("utf-8"))
-    assert rjson["status"] == 200
+
+    assert r.json().get("status") == "success"
 
 
 job_data_with_run = {
@@ -74,7 +73,5 @@ def test_run_cmd():
         urljoin(JOB_MANAGER_URL, "job/0bc72a99-390e-4929-a23f-d8e91b85dd34/start"),
         json=job_data_with_run,
     )
-    print(r.content)
-    rjson = json.loads(r.content.decode("utf-8"))
-    print(rjson["data"])
-    assert rjson["status"] == 200
+
+    assert r.json().get("status") == "success"

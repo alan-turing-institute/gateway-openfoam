@@ -22,7 +22,7 @@ def mock_get_simulator_connection():
     get the simulator connection, without needing a running app.
     """
 
-    modified_config = json.load(open("manager/config.testing.json"))
+    modified_config = json.load(open("manager/tests/config.testing.json"))
     # overwrite path to SSH key
     modified_config["SSH_PRIVATE_KEY_PATH"] = "manager/keys/simulator_key"
 
@@ -37,8 +37,8 @@ def test_exec_command():
     test that we can get the simulator to echo 'hello'
     """
     connect = mock_get_simulator_connection()
-    out, err, exit_code = connect.run_remote_command("echo hello")
-    assert out.strip() == "hello"
+    stdout, _, _ = connect.run_remote_command("echo hello")
+    assert stdout.strip() == "hello"
 
 
 @mock.patch(
@@ -59,19 +59,17 @@ def test_script_transfer(mock_get_simulator_connection):
 
     # now call the actual function
     job_id = "66e0de89-925b-4f00-abf8-a400ea644ce4"
-    copied_ok, message = file_putter.copy_scripts_to_backend(
-        dambreak_dir, simulation_root, job_id
-    )
+    success = file_putter.copy_scripts_to_backend(job_id, dambreak_dir, simulation_root)
 
-    assert copied_ok
+    assert success
 
     # verify that we did copy something
     destination_dir = os.path.join(simulation_root, job_id)
-    out, err, exit_code = connect.run_remote_command("ls " + destination_dir)
+    stdout, _, _ = connect.run_remote_command("ls " + destination_dir)
 
-    assert "0" in out
-    assert "Allclean" in out
+    assert "0" in stdout
+    assert "Allclean" in stdout
 
     subdir = os.path.join(destination_dir, "0")
-    out, err, exit_code = connect.run_remote_command("ls " + subdir)
-    assert "alpha.water.orig" in out
+    stdout, _, _ = connect.run_remote_command("ls " + subdir)
+    assert "alpha.water.orig" in stdout
